@@ -3,7 +3,7 @@
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
 // @author Shrek, rhymesagainsthumanity, pushr (original creator)
-// @version 2019.12.11.4
+// @version 2019.12.11.5
 // @updateURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.meta.js
 // @downloadURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 // @supportURL https://abook.link/book/index.php?topic=54768
@@ -121,13 +121,6 @@ function checkCode(code){
 
 function process_kooba_search() {
   console.log('Process Kooba');
-  if (! (
-      document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
-    || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
-    )) {
-    console.log('Skipping page, not a Book or Test Section');
-    return;
-  }
   const headers = document.querySelectorAll('.codeheader');
   if (headers){
     headers.forEach(function (header) {
@@ -161,19 +154,19 @@ function process_kooba_search() {
     });
   }
 }
-process_kooba_search();
 
 
 if ((
       document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
     || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
     )) {
+  process_kooba_search();
   console.log('Injecting Detour of Thank Function');
   // detour the original thank you click action
   window['orig_saythanks_handleThankClick'] = saythanks.prototype.handleThankClick;
   saythanks.prototype.handleThankClick = function (oInput) {
-    console.log('Thank Detected'); // output to console that we intercepted the thank
-    window['orig_saythanks_handleThankClick'](oInput); // call original thank action
+      console.log('Thank Detected'); // output to console that we intercepted the thank
+      window['orig_saythanks_handleThankClick'](oInput); // call original thank action
       setTimeout(process_kooba_search, 200); // look for search boxes
       setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but
       setTimeout(process_kooba_search, 2000); // here are a few more intervals to
