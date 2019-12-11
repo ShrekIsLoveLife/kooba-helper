@@ -1,0 +1,12 @@
+{
+  "name": "Kooba Helper",
+  "version": "2019.12.10.1",
+  "description": "For a better kooba<=>abook experience",
+  "author": "'[Shrek]'  BTC: 1ANyHwihu9dL2CZ9LUZ48FdYTzyz8CCCFf, 'rhymesagainsthumanity', 'Unknown'  If you contributed or originally created this let me know to add attribution",
+  "manifest_version": 2,
+  "content_scripts": [{
+    "css": ["styles.css"],
+    "js": ["content.js"],
+    "matches": ["*://abook.link/*"]
+  }]
+}
