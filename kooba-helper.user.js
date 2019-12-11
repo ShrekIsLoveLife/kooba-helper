@@ -173,7 +173,7 @@ saythanks.prototype.handleThankClick = function (oInput) {
       document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
     || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
     )) {
-    console.log('Skipping page, not a Book or Test Section');
+    console.log('Skipping page, not a Book or Test Section and Thanked');
   } else {
     setTimeout(process_kooba_search, 200); // look for search boxes
     setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but
