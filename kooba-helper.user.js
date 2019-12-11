@@ -2,7 +2,7 @@
 // @name kooba-helper
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
-// @version 2019.12.10.2
+// @version 2019.12.10.5
 // @author Shrek
 // @include *://abook.link/*
 // @match *://abook.link/*
