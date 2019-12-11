@@ -1,5 +1,5 @@
 
-# kooba-helper v2019.12.10.5
+# kooba-helper
 For a better kooba<=>abook experience.
 
 
