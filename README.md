@@ -18,10 +18,7 @@ For a better kooba<=>abook experience.
 ## Maintained/Created By:
 * [Shrek]  BTC: 1ANyHwihu9dL2CZ9LUZ48FdYTzyz8CCCFf
 * rhymesagainsthumanity
-* Unknown
-  * I don't know who originally created or contributed to this
-  * If you contributed or originally created this let me know to add attribution
-
+* pushr (original creator of the chrome extension)
 
 
 ## Installation:
