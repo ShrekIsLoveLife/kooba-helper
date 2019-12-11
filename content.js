@@ -83,6 +83,13 @@ function checkCode(code){
 
 function process_kooba_search() {
   console.log('Process Kooba');
+  if (! ( 
+      document.querySelector('a[href="https://abook.link/book/index.php#c3"]') 
+    || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
+    )) {
+    console.log('Skipping page, not a Book or Test Section');
+    return;
+  }
   const headers = document.querySelectorAll('.codeheader');
   if (headers){
     headers.forEach(function (header) {

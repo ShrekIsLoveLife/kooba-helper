@@ -1,6 +1,6 @@
 
 
-# kooba-helper v2019.12.10.1
+# kooba-helper v2019.12.10.2
 For a better kooba<=>abook experience.
 
 ## Description:
@@ -26,6 +26,10 @@ For a better kooba<=>abook experience.
 Alternatively, you can drag and drop the extracted zip file director onto chrome://extensions in your browser to load it.
 
 ## Changelog:
+2019.12.10.2
+* Only processes on Book and Test sections
+
+2019.12.10.1
 **Since v1.9.1**
 * Changed version convention to YYYY.MM.DD.#
 * Upon page load, it processes code boxes, now it detours the thank function and processes when thanked is clicked
