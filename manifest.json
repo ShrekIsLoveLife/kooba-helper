@@ -8,5 +8,10 @@
     "css": ["styles.css"],
     "js": ["content.js"],
     "matches": ["*://abook.link/*"]
-  }]
+  }],
+  "applications": {
+   "gecko": {
+     "id": "kooba-helper@shrek"
+   }
+  }
 }

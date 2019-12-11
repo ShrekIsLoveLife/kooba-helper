@@ -1,3 +1,16 @@
+// ==UserScript==
+// @name kooba-helper
+// @namespace    kooba-helper@shrek
+// @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
+// @version 2019.12.10.2
+// @author Shrek
+// @include *://abook.link/*
+// @match *://abook.link/*
+// @run-at document-end
+// @grant none
+// ==/UserScript==
+
+
 document.querySelector('head').innerHTML += `
 <style>
 
@@ -36,7 +49,7 @@ document.querySelector('head').innerHTML += `
 `;
 
 function sanatize_common(code) {
-  code = code.replace(/(?:abook|kooba)\\.*(?:to|link|ws)*\\s*(?:-|\\||~)*\\s*/gi, '');
+  code = code.replace(/(?:abook|kooba)\.*(?:to|link|ws)*\s*(?:-|\||~)*\s*/gi, '');
   code = code.replace(/['"]+/g, '');
   code = code.replace(/\\&+/g, ' ');
   return code.trim();
@@ -105,8 +118,8 @@ function checkCode(code){
 
 function process_kooba_search() {
   console.log('Process Kooba');
-  if (! ( 
-      document.querySelector('a[href="https://abook.link/book/index.php#c3"]') 
+  if (! (
+      document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
     || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
     )) {
     console.log('Skipping page, not a Book or Test Section');
@@ -143,7 +156,7 @@ function process_kooba_search() {
       header.classList.add('kooba_crunched'); // add tracking class
       header.insertAdjacentHTML('beforeend', content);
     });
-  }  
+  }
 }
 process_kooba_search();
 window['process_kooba_search2'] = process_kooba_search;
@@ -154,8 +167,8 @@ saythanks.prototype.handleThankClick = function (oInput) {
   console.log('Thank Detected'); // output to console that we intercepted the thank
   window['orig_saythanks_handleThankClick'](oInput); // call original thank action
   setTimeout(process_kooba_search, 200); // look for search boxes
-  setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but 
-  setTimeout(process_kooba_search, 2000); // here are a few more intervals to 
+  setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but
+  setTimeout(process_kooba_search, 2000); // here are a few more intervals to
   setTimeout(process_kooba_search, 5000); // keep trying, because it can't hurt,
   setTimeout(process_kooba_search, 10000); //  since we track injection now
 }
