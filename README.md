@@ -1,12 +1,11 @@
-# kooba-helper v2019.12.10.3
+
+# kooba-helper v2019.12.10.5
 For a better kooba<=>abook experience.
 
 
 ## Description:
 * This adds search links to Abook forums code boxes that use [code] search strings.
 * Search engines added are NZBIndex, BinSearch, NZBKing
-* It is for Chrome based browsers ( Chrome, Chromium, Iron, Opera )
-* A bookmarklet exists for non-compatible browsers.
 
 
 ## Notice:
@@ -25,41 +24,37 @@ For a better kooba<=>abook experience.
 
 
 
-## Installation on TamperMonkey (cross-browser):
+## Installation:
 1. Install TamperMonkey from your Browser's Add-on/Extension site
 1. Visit https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 1. Hit the Install button
 1. Maybe give TamperMonkey permission for Incognito/Private browsing mode if you use that
 
 
+## Bookmarklet:
+* This is not a recommended way to use this tool.
+* If for some reason you don't want to install TamperMonkey, but still want some of the benefits of Kooba-Helper, it's available as a bookmarklet.
+   * A bookmarklet is a link you can put in your bookmarks or bookmark bar that runs some code on a website when clicked.
+   * Unfortunately, the bookmarklet will not run automatically, so you have to click it on every page view if you want to make use of it.
+* You can get the bookmarklet at https://shrekislovelife.github.io/kooba-helper/bookmarklet.html by following the instructions on that page.
+* The kooba-helper.user.js is the same source code as used in the bookmarklet.
+  * You can regenerate the bookmarklet by pasting the code from the user.js in  https://shrekislovelife.github.io/audible-meta-bookmarklet/make_bookmarklet.html
 
-## Installation on Chrome based Browsers ( Chrome, Chromium, Iron, Opera ):
-1. Download the Zip file from the [Release Section](https://github.com/ShrekIsLoveLife/kooba-helper/releases) on GitHub
-1. Extract to a folder your local machine
-1. Visit chrome://extensions in your browser (or open up the Chrome menu by clicking the icon to the far right of the Omnibox:  The menu's icon is three horizontal bars. and select Extensions under the Tools menu to get to the same place).
-1. Ensure that the Developer mode checkbox in the top right-hand corner is checked.
-1. Click Load unpacked extension… to pop up a file-selection dialog.
-1. Navigate to the extracted zip file directory, and select it.
-1. Alternatively, you can drag and drop the extracted zip file director onto chrome://extensions in your browser to load it.
-1. Ignore/Cancel anything saying you're in developer mode, etc. ( Opera and Iron nag you less )
-1. Maybe give it permission for Incognito/Private browsing mode if you use that
-
-
-
-## Installation on Firefox (old webextensions compatiable):
-1. I recommend doing the Installation on TamperMonkey section instead for Firefox
-1. Download the Zip file from the [Release Section](https://github.com/ShrekIsLoveLife/kooba-helper/releases) on GitHub
-1. Visit about:addons
-1. Click the Gear icon on the top right
-1. Click Install Addon-From File and navigate to the Zip file
-  1. Should it complain about signing, you are on a newer version of Firefox and unfortunately you have one of the newer copies of Firefox that requires Add-ons to be signed.
-  1. You can get around this by installing via debugging mode, but you can install it for your session by visiting: about:debugging#/runtime/this-firefox and clicking Load Temporary Add-on, then selecting the Zip file. If you restart your browser, you have to do this again.
-1. Maybe give it permission for Incognito/Private browsing mode if you use that
 
 
 
 
 ## Changelog:
+2019.12.10.5
+* I've dropped support for the Browser Exclusive Extensions/Add-ons
+* Please Install TamperMonkey Extension/Add-on and then install Kooba-Helper by visiting https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
+* This is a cross-browser solution that works great for a tool like this.
+* The last repository to have the code for Chrome and Firefox Extensions is: https://github.com/ShrekIsLoveLife/kooba-helper/tree/48ac583fa44b8d79fa4dc69be9f784151428a864
+* Since the Bookmarklet shares the same code and structure as the TamperMonkey Script, I will keep it updated for now.
+
+2019.12.10.4
+* Added TamperMonkey and Limited Firefox support
+
 2019.12.10.3
 * Added bookmarklet, no extension change
 
@@ -82,14 +77,4 @@ For a better kooba<=>abook experience.
 * The searches now use a keyword replace of {query}
 * Searches for PostBot style hide/code boxes
 * Standardizes code sanitization of search string
-
-
-
-##### Get the Kooba-Helper Bookmarklet (This should work cross-browser, but has a manual step)
-[Click Here to get Bookmarklet](https://shrekislovelife.github.io/kooba-helper/bookmarklet.html "Click Here to get Bookmarklet")
-
-
-
-##### Create Bookmarklet From JS Snippet
-[Click Here to Make Bookmarklet](https://shrekislovelife.github.io/audible-meta-bookmarklet/make_bookmarklet.html "Click Here to Make Bookmarklet")
 
