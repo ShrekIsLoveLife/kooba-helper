@@ -1,10 +1,9 @@
 
-
-# kooba-helper v2019.12.10.2
+# kooba-helper v2019.12.10.3
 For a better kooba<=>abook experience.
 
 ## Description:
-* This adds search links to Abook forums code boxes.
+* This adds search links to Abook forums code boxes that use [code] search strings.
 * Search engines added are NZBIndex, BinSearch, NZBKing
 
 ## Maintained/Created By:
@@ -26,6 +25,9 @@ For a better kooba<=>abook experience.
 Alternatively, you can drag and drop the extracted zip file director onto chrome://extensions in your browser to load it.
 
 ## Changelog:
+2019.12.10.3
+* Added bookmarklet, no extension change
+
 2019.12.10.2
 * Only processes on Book and Test sections
 
@@ -45,4 +47,14 @@ Alternatively, you can drag and drop the extracted zip file director onto chrome
 * The searches now use a keyword replace of {query}
 * Searches for PostBot style hide/code boxes
 * Standardizes code sanitization of search string
+
+
+
+##### Get the Kooba-Helper Bookmarklet (This should work cross-browser, but has a manual step)
+[Click Here to get Bookmarklet](https://shrekislovelife.github.io/kooba-helper/bookmarklet.html "Click Here to get Bookmarklet")
+
+
+
+##### Create Bookmarklet From JS Snippet
+[Click Here to Make Bookmarklet](https://shrekislovelife.github.io/audible-meta-bookmarklet/make_bookmarklet.html "Click Here to Make Bookmarklet")
 
