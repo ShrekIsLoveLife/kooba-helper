@@ -29,7 +29,8 @@ For a better kooba<=>abook experience.
 1. Visit https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 1. Hit the Install button
 1. Maybe give TamperMonkey permission for Incognito/Private browsing mode if you use that
-1. To update, just visit the user.js page mentioned above and click the update button.
+1. To update, just visit the user.js page mentioned above and click the update button. (It also now uses the TamperMonkey built-in update.)
+
 
 
 ## Bookmarklet:
