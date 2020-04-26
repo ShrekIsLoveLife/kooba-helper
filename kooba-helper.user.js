@@ -3,7 +3,7 @@
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
 // @author Shrek, rhymesagainsthumanity, pushr (original creator)
-// @version 2020.02.01.1
+// @version 2020.04.26.1
 // @updateURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.meta.js
 // @downloadURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 // @supportURL https://abook.link/book/index.php?topic=54768
@@ -24,21 +24,21 @@ function sanatize_common(code) {
 const indexers = [
   {
     name: 'NZBIndex',
-    url: 'http://blankrefer.com/?https://nzbindex.com/search?max=25&minage=&maxage=&hidespam=1&hidepassword=0&sort=agedesc&minsize=&maxsize=&complete=0&hidecross=0&hasNFO=0&poster=&q={query}',
+    url: 'https://DoNotRefer.Me/#https://nzbindex.com/search?max=25&minage=&maxage=&hidespam=1&hidepassword=0&sort=agedesc&minsize=&maxsize=&complete=0&hidecross=0&hasNFO=0&poster=&q={query}',
     codeFn: function(code) {
       return sanatize_common(code);
     }
   },
   {
     name: 'BinSearch',
-    url: 'http://blankrefer.com/?https://www.binsearch.info/?max=100&adv_g=alt.binaries.mp3.abooks&adv_age=&adv_sort=date&q={query}',
+    url: 'https://DoNotRefer.Me/#https://www.binsearch.info/?max=100&adv_g=alt.binaries.mp3.abooks&adv_age=&adv_sort=date&q={query}',
     codeFn: function(code) {
       return sanatize_common(code);
     }
   },
   {
     name: 'NZBKing',
-    url: 'http://blankrefer.com/?http://nzbking.com/search/?q=%22{query}%22',
+    url: 'https://DoNotRefer.Me/#http://nzbking.com/search/?q=%22{query}%22',
     codeFn: function(code) {
       return sanatize_common(code);
     }
