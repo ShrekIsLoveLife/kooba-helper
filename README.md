@@ -4,6 +4,7 @@ For a better kooba<=>abook experience.
 
 
 ## Description:
+* This adds "Copy Title" to Abook forum code boxes and post titles
 * This adds search links to Abook forums code boxes that use [code] search strings.
 * Search engines added are NZBIndex, BinSearch, NZBKing
 
