@@ -3,7 +3,7 @@
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
 // @author Shrek, rhymesagainsthumanity, pushr (original creator)
-// @version 2021.03.21.1
+// @version 2022.04.29.1
 // @updateURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.meta.js
 // @downloadURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 // @supportURL https://abook.link/book/index.php?topic=54768
@@ -113,6 +113,19 @@ function process_kooba_search() {
         return;
       }
 
+      var page_author = document.querySelector('#author');
+      var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].trim();
+
+      var iObjCopyTitle = document.createElement('a');
+      iObjCopyTitle.id = 'kooba-title-copy2';
+      iObjCopyTitle.classList.add('kooba-title-copy2');
+      iObjCopyTitle.dataset.cipboard = page_title;
+      iObjCopyTitle.title = 'Copy "' + page_title + '" to clipboard';
+      iObjCopyTitle.innerHTML = ` [Copy Title]`;
+      iObjCopyTitle.addEventListener('click', function(e) {
+          kooba_copy_clipboard_data(e.target);
+      });
+
       const content = `
         <div class="kooba-search-links">
           <span>Search:</span>
@@ -121,6 +134,7 @@ function process_kooba_search() {
       `;
       header.classList.add('kooba_crunched'); // add tracking class
       header.insertAdjacentHTML('beforeend', content);
+      header.insertAdjacentElement("beforeend", iObjCopyTitle);
     });
   }
 }
@@ -160,15 +174,89 @@ function inject_kooba_style() {
   margin: 0;
   padding: 0 .5em;
 }
+
+.kooba-title-copy {
+    color: #57aad2;
+}
+.kooba-title-copy:hover {
+    text-decoration: underline;
+}
+
+.kooba-title-copy2 {
+    margin-left: 30px;
+    color: #9383e0;
+    font-weight: normal;
+}
+.kooba-title-copy2:hover {
+    text-decoration: underline;
+}
 </style>
 `;
+}
+
+window['kooba_copy_clipboard_str'] = str => {
+	const el = document.createElement('textarea');
+	el.value = str;
+	el.setAttribute('readonly', '');
+	el.style.position = 'absolute';
+	el.style.left = '-9999px';
+	document.body.appendChild(el);
+	el.select();
+	document.execCommand('copy');
+	document.body.removeChild(el);
+  };
+
+
+window['kooba_copy_clipboard_data'] = function kooba_copy_clipboard_data(obj) {
+	kooba_copy_clipboard_str(obj.dataset.cipboard);
+
+	var iDiv3 = document.createElement('div');
+	iDiv3.className = 'copied_to_clipboard';
+	iDiv3.style.border = '1px solid red';
+	iDiv3.style.backgroundColor = 'red';
+	iDiv3.style.color = 'yellow';
+	iDiv3.style.textAlign = 'center';
+	iDiv3.style.display = 'inline-block';
+	iDiv3.style.position = 'absolute';
+	iDiv3.style.marginLeft = '10px';
+	// iDiv3.style.width = obj.offsetWidth + 'px';
+	iDiv3.innerHTML = 'text copied to clipboard';
+	kooba_insert_after(iDiv3, obj);
+	setTimeout(function() {
+	  var elements = document.getElementsByClassName('copied_to_clipboard');
+	  while(elements.length > 0){ elements[0].parentNode.removeChild(elements[0]); }
+	 }, 2000);
+  }
+
+window['kooba_insert_after'] = function kooba_insert_after(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
+
+window['inject_kooba_title_copy'] = function inject_kooba_title_copy() {
+    if ( document.querySelector('#kooba-title-copy') === null ) {
+        // var page_title = document.querySelector('title').text.match(/Book Club - (.*)/i)[1].trim();
+        var page_author = document.querySelector('#author');
+        var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].trim();
+
+        var iObjCopyTitle = document.createElement('a');
+        iObjCopyTitle.classList.add('kooba-title-copy');
+        iObjCopyTitle.id = 'kooba-title-copy';
+        iObjCopyTitle.dataset.cipboard = page_title;
+        iObjCopyTitle.title = 'Copy "' + page_title + '" to clipboard';
+        iObjCopyTitle.innerHTML = ` [Copy]`;
+        iObjCopyTitle.addEventListener('click', function(e) {
+            kooba_copy_clipboard_data(e.target);
+        });
+        kooba_insert_after(iObjCopyTitle, page_author.nextSibling);
+    }
 }
 
 if ((
       document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
     || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
     )) {
-	inject_kooba_style()
+    inject_kooba_title_copy();
+	inject_kooba_style();
   	process_kooba_search();
   	console.log('Injecting Detour of Thank Function');
   	// detour the original thank you click action
