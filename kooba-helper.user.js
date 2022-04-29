@@ -3,7 +3,7 @@
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
 // @author Shrek, rhymesagainsthumanity, pushr (original creator)
-// @version 2022.04.29.1
+// @version 2022.04.29.2
 // @updateURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.meta.js
 // @downloadURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 // @supportURL https://abook.link/book/index.php?topic=54768
@@ -114,7 +114,7 @@ function process_kooba_search() {
       }
 
       var page_author = document.querySelector('#author');
-      var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].trim();
+      var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].replace(/\[spot\]/gi,'').trim();
 
       var iObjCopyTitle = document.createElement('a');
       iObjCopyTitle.id = 'kooba-title-copy2';
@@ -236,7 +236,7 @@ window['inject_kooba_title_copy'] = function inject_kooba_title_copy() {
     if ( document.querySelector('#kooba-title-copy') === null ) {
         // var page_title = document.querySelector('title').text.match(/Book Club - (.*)/i)[1].trim();
         var page_author = document.querySelector('#author');
-        var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].trim();
+        var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].replace(/\[spot\]/gi,'').trim();
 
         var iObjCopyTitle = document.createElement('a');
         iObjCopyTitle.classList.add('kooba-title-copy');
