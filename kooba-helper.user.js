@@ -3,7 +3,7 @@
 // @namespace    kooba-helper@shrek
 // @description For a better kooba<=>abook experience. This adds search links to Abook forums code boxes.
 // @author Shrek, rhymesagainsthumanity, pushr (original creator)
-// @version 2022.04.29.2
+// @version 2022.06.22.1
 // @updateURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.meta.js
 // @downloadURL https://shrekislovelife.github.io/kooba-helper/kooba-helper.user.js
 // @supportURL https://abook.link/book/index.php?topic=54768
@@ -15,132 +15,169 @@
 
 
 function sanatize_common(code) {
-  code = code.replace(/(?:abook|kooba)\.*(?:to|link|ws)*\s*(?:-|\||~)*\s*/gi, '');
-  code = code.replace(/['"]+/g, '');
-  code = code.replace(/\\&+/g, ' ');
-  return code.trim();
+    code = code.replace(/(?:abook|kooba)\.*(?:to|link|ws)*\s*(?:-|\||~)*\s*/gi, '');
+    code = code.replace(/['"]+/g, '');
+    code = code.replace(/\\&+/g, ' ');
+    return code.trim();
 }
 
 const indexers = [
-  {
-    name: 'NZBIndex',
-    url: 'https://DoNotRefer.Me/#https://nzbindex.com/search?max=25&minage=&maxage=&hidespam=1&hidepassword=0&sort=agedesc&minsize=&maxsize=&complete=0&hidecross=0&hasNFO=0&poster=&q={query}',
-    codeFn: function(code) {
-      return sanatize_common(code);
+    {
+        name: 'NZBIndex',
+        url: 'https://DoNotRefer.Me/#https://nzbindex.com/search?max=25&minage=&maxage=&hidespam=1&hidepassword=0&sort=agedesc&minsize=&maxsize=&complete=0&hidecross=0&hasNFO=0&poster=&q={query}',
+        codeFn: function(code) {
+            return sanatize_common(code);
+        }
+    },
+    {
+        name: 'BinSearch',
+        url: 'https://DoNotRefer.Me/#https://www.binsearch.info/?max=1000&&adv_age=&adv_sort=date&server=2&&q={query}',
+        codeFn: function(code) {
+            return sanatize_common(code);
+        }
+    },
+    {
+        name: 'BinSearch-Abook',
+        url: 'https://DoNotRefer.Me/#https://www.binsearch.info/?max=100&adv_g=alt.binaries.mp3.abooks&adv_age=&adv_sort=date&q={query}',
+        codeFn: function(code) {
+            return sanatize_common(code);
+        }
+    },
+    {
+        name: 'NZBKing',
+        url: 'https://DoNotRefer.Me/#http://nzbking.com/search/?q=%22{query}%22',
+        codeFn: function(code) {
+            return sanatize_common(code);
+        }
     }
-  },
-  {
-    name: 'BinSearch',
-    url: 'https://DoNotRefer.Me/#https://www.binsearch.info/?max=1000&&adv_age=&adv_sort=date&server=2&&q={query}',
-    codeFn: function(code) {
-      return sanatize_common(code);
-    }
-  },
-  {
-    name: 'BinSearch-Abook',
-    url: 'https://DoNotRefer.Me/#https://www.binsearch.info/?max=100&adv_g=alt.binaries.mp3.abooks&adv_age=&adv_sort=date&q={query}',
-    codeFn: function(code) {
-      return sanatize_common(code);
-    }
-  },
-  {
-    name: 'NZBKing',
-    url: 'https://DoNotRefer.Me/#http://nzbking.com/search/?q=%22{query}%22',
-    codeFn: function(code) {
-      return sanatize_common(code);
-    }
-  }
 ];
 
 function buildLinks(code){
-  console.log("Build: ", code);
-  let list = '';
-  indexers.forEach(function (index) {
-    console.log("IC: ", index.codeFn(code));
-    const link = index.url.replace(/{query}/g, encodeURIComponent(index.codeFn(code)));
+    console.log("Build: ", code);
+    let list = '';
+    indexers.forEach(function (index) {
+        console.log("IC: ", index.codeFn(code));
+        const link = index.url.replace(/{query}/g, encodeURIComponent(index.codeFn(code)));
 
-    list += `
+        list += `
       <li>
         <a rel="noreferrer" rel="noopener" target="_blank" href="${link}">
           ${index.name}
         </a>
       </li>
     `;
-  });
+    });
 
-  return list;
+    return list;
 }
 
 function checkHeader(header){
-  // Check if any of the previous 5 siblings contain sting of "password"
-  let heading = header.previousSibling;
-  let i = 0;
-  while (heading && i < 5) {
-    i++;
-    if (heading.textContent.toLowerCase().includes('password')) return true;
-    heading = heading.previousSibling;
-  }
+    // Check if any of the previous 5 siblings contain sting of "password"
+    let heading = header.previousSibling;
+    let i = 0;
+    while (heading && i < 5) {
+        i++;
+        if (heading.textContent.toLowerCase().includes('password')) return true;
+        heading = heading.previousSibling;
+    }
 
-  return false;
+    return false;
 }
 
 function checkCode(code){
-  // Check if code itself contains string of "password"
-  return code.toLowerCase().includes('password');
+    // Check if code itself contains string of "password"
+    return code.toLowerCase().includes('password');
 }
 
 function process_kooba_search() {
-  console.log('Process Kooba');
-  const headers = document.querySelectorAll('.codeheader');
-  if (headers){
-    headers.forEach(function (header) {
-      // Skip if already processed
-      if ( header.classList.contains('kooba_crunched') ) return;
+    console.log('Process Kooba');
+    const headers = document.querySelectorAll('.codeheader');
+    if (headers){
+        headers.forEach(function (header) {
+            // Skip if already processed
+            if ( header.classList.contains('kooba_crunched') ) return;
 
-      if (header.nextSibling.nodeName.toUpperCase() == 'BR') {
-        console.log('PostBot Style');
-        var code = header.nextSibling.nextSibling.textContent;
-      } else {
-        console.log('New Style');
-        var code = header.nextSibling.textContent;
-      }
-      console.log('Code: ', code);
+            let code = '';
+            if (header.nextSibling.nodeName.toUpperCase() == 'BR') {
+                console.log('PostBot Style');
+                code = header.nextSibling.nextSibling.textContent;
+            } else {
+                console.log('New Style');
+                code = header.nextSibling.textContent;
+            }
+            console.log('Code: ', code);
 
-      // Skip if code is a password
-      if (checkHeader(header) || checkCode(code)) {
-        console.log('Skipped');
-        header.classList.add('kooba_crunched');
-        return;
-      }
+            // Skip if code is a password
+            if (checkHeader(header) || checkCode(code)) {
+                console.log('Skipped password: ' + code);
+                header.classList.add('kooba_crunched');
+                return;
+            }
 
-      var page_author = document.querySelector('#author');
-      var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].replace(/\[spot\]/gi,'').trim();
+            console.log(header);
 
-      var iObjCopyTitle = document.createElement('a');
-      iObjCopyTitle.id = 'kooba-title-copy2';
-      iObjCopyTitle.classList.add('kooba-title-copy2');
-      iObjCopyTitle.dataset.cipboard = page_title;
-      iObjCopyTitle.title = 'Copy "' + page_title + '" to clipboard';
-      iObjCopyTitle.innerHTML = ` [Copy Title]`;
-      iObjCopyTitle.addEventListener('click', function(e) {
-          kooba_copy_clipboard_data(e.target);
-      });
 
-      const content = `
+            let codes = header.parentElement.querySelectorAll('.bbc_code');
+            let password = '';
+            if (codes.length >= 2) {
+                // password likely
+                for (let i = 1; i < codes.length; i++) { // not first
+                    let ele = codes[i];
+                    console.log(ele);
+                    let tmp_code = ele.textContent;
+
+
+                    if (checkHeader(ele) || checkCode(tmp_code)) {
+                        password = tmp_code;
+                        console.log('Password: ', password);
+                    }
+
+                }
+            }
+
+            var page_author = document.querySelector('#author');
+            var page_title = page_author.nextSibling.textContent.match(/Topic:(.*?)(?:\(Read)/i)[1].replace(/\[spot\]/gi,'').trim();
+
+            var iObjCopyTitle = document.createElement('a');
+            iObjCopyTitle.id = 'kooba-title-copy2';
+            iObjCopyTitle.classList.add('kooba-title-copy2');
+            iObjCopyTitle.dataset.cipboard = page_title;
+            iObjCopyTitle.title = 'Copy "' + page_title + '" to clipboard';
+            iObjCopyTitle.innerHTML = ` [Copy Title]`;
+            iObjCopyTitle.addEventListener('click', function(e) {
+                kooba_copy_clipboard_data(e.target);
+            });
+
+            const content = `
         <div class="kooba-search-links">
           <span>Search:</span>
           <ul>${buildLinks(code)}</ul>
         </div>
       `;
-      header.classList.add('kooba_crunched'); // add tracking class
-      header.insertAdjacentHTML('beforeend', content);
-      header.insertAdjacentElement("beforeend", iObjCopyTitle);
-    });
-  }
+            header.classList.add('kooba_crunched'); // add tracking class
+            //header.insertAdjacentHTML('beforeend', content);
+            //header.insertAdjacentElement("beforeend", iObjCopyTitle);
+
+            const content_nzbdonkey = `
+        <div class="kooba-nzbdonkey">
+			<div class="kooba-nzbdonkey-title">NZBDonkey Highlight Text <a class="kooba-nzbdonkey-help" target="_blank" href="https://tensai75.github.io/NZBDonkey/" title="This extension allows you to right click the text below and click 'Get NZB File' to automatically find and process the NZB.\n\nAnother extension is required.">?</a></div>
+			<div class="kooba-nzbdonkey-text"  onclick="window.getSelection().selectAllChildren(this);" oncontextmenu="window.getSelection().selectAllChildren(this);">
+				<div>${page_title}</div>
+				<div>Header: ${sanatize_common(code)}</div>
+				<div>Password: ${password}</div>
+			</div>
+        </div>
+      `;
+
+            header.parentElement.insertAdjacentHTML('beforeend', content_nzbdonkey);
+
+
+        });
+    }
 }
 
 function inject_kooba_style() {
-	document.querySelector('head').innerHTML += `
+    document.querySelector('head').innerHTML += `
 <style>
 
 .kooba-search-links,
@@ -190,43 +227,67 @@ function inject_kooba_style() {
 .kooba-title-copy2:hover {
     text-decoration: underline;
 }
+
+.kooba-nzbdonkey {
+    margin-top: 20px;
+    border: 1px dotted yellow;
+    padding: 10px;
+}
+.kooba-nzbdonkey-title {
+    font-weight: bold;
+    color: red;
+}
+a.kooba-nzbdonkey-help {
+    text-decoration: none;
+    color: #2196f3;
+    border-bottom: 1px dotted #2196f3;
+}
+.kooba-nzbdonkey-text {
+    font-size: 10px;
+    font-weight: normal;
+    font-family: monospace;
+    color: #bb96e0;
+    padding-left: 30px;
+}
 </style>
+
 `;
 }
 
+
 window['kooba_copy_clipboard_str'] = str => {
-	const el = document.createElement('textarea');
-	el.value = str;
-	el.setAttribute('readonly', '');
-	el.style.position = 'absolute';
-	el.style.left = '-9999px';
-	document.body.appendChild(el);
-	el.select();
-	document.execCommand('copy');
-	document.body.removeChild(el);
-  };
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+};
 
 
 window['kooba_copy_clipboard_data'] = function kooba_copy_clipboard_data(obj) {
-	kooba_copy_clipboard_str(obj.dataset.cipboard);
+    kooba_copy_clipboard_str(obj.dataset.cipboard);
 
-	var iDiv3 = document.createElement('div');
-	iDiv3.className = 'copied_to_clipboard';
-	iDiv3.style.border = '1px solid red';
-	iDiv3.style.backgroundColor = 'red';
-	iDiv3.style.color = 'yellow';
-	iDiv3.style.textAlign = 'center';
-	iDiv3.style.display = 'inline-block';
-	iDiv3.style.position = 'absolute';
-	iDiv3.style.marginLeft = '10px';
-	// iDiv3.style.width = obj.offsetWidth + 'px';
-	iDiv3.innerHTML = 'text copied to clipboard';
-	kooba_insert_after(iDiv3, obj);
-	setTimeout(function() {
-	  var elements = document.getElementsByClassName('copied_to_clipboard');
-	  while(elements.length > 0){ elements[0].parentNode.removeChild(elements[0]); }
-	 }, 2000);
-  }
+    var iDiv3 = document.createElement('div');
+    iDiv3.className = 'copied_to_clipboard';
+    iDiv3.style.border = '1px solid red';
+    iDiv3.style.backgroundColor = 'red';
+    iDiv3.style.color = 'yellow';
+    iDiv3.style.textAlign = 'center';
+    iDiv3.style.display = 'inline-block';
+    iDiv3.style.position = 'absolute';
+    iDiv3.style.marginLeft = '10px';
+    // iDiv3.style.width = obj.offsetWidth + 'px';
+    iDiv3.innerHTML = 'text copied to clipboard';
+    kooba_insert_after(iDiv3, obj);
+    setTimeout(function() {
+        var elements = document.getElementsByClassName('copied_to_clipboard');
+        while(elements.length > 0){ elements[0].parentNode.removeChild(elements[0]); }
+    }, 2000);
+}
 
 window['kooba_insert_after'] = function kooba_insert_after(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
@@ -252,22 +313,22 @@ window['inject_kooba_title_copy'] = function inject_kooba_title_copy() {
 }
 
 if ((
-      document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
+    document.querySelector('a[href="https://abook.link/book/index.php#c3"]')
     || document.querySelector('a[href="https://abook.link/book/index.php?board=18.0"]')
-    )) {
+)) {
     inject_kooba_title_copy();
-	inject_kooba_style();
-  	process_kooba_search();
-  	console.log('Injecting Detour of Thank Function');
-  	// detour the original thank you click action
-  	window['orig_saythanks_handleThankClick'] = saythanks.prototype.handleThankClick;
-  	saythanks.prototype.handleThankClick = function (oInput) {
-		console.log('Thank Detected'); // output to console that we intercepted the thank
-		window['orig_saythanks_handleThankClick'](oInput); // call original thank action
-		setTimeout(process_kooba_search, 200); // look for search boxes
-		setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but
-		setTimeout(process_kooba_search, 2000); // here are a few more intervals to
-  		setTimeout(process_kooba_search, 5000); // keep trying, because it can't hurt,
-  		setTimeout(process_kooba_search, 10000); //  since we track injection now
-  	}
+    inject_kooba_style();
+    process_kooba_search();
+    console.log('Injecting Detour of Thank Function');
+    // detour the original thank you click action
+    window['orig_saythanks_handleThankClick'] = saythanks.prototype.handleThankClick;
+    saythanks.prototype.handleThankClick = function (oInput) {
+        console.log('Thank Detected'); // output to console that we intercepted the thank
+        window['orig_saythanks_handleThankClick'](oInput); // call original thank action
+        setTimeout(process_kooba_search, 200); // look for search boxes
+        setTimeout(process_kooba_search, 1000); // it should catch after 200 ms but
+        setTimeout(process_kooba_search, 2000); // here are a few more intervals to
+        setTimeout(process_kooba_search, 5000); // keep trying, because it can't hurt,
+        setTimeout(process_kooba_search, 10000); //  since we track injection now
+    }
 }
